@@ -19,7 +19,7 @@ reducers.destinations = (destinations = [], { type, payload }) => {
       return [];
     case 'DEST_ADD':
       return [...destinations, payload];
-    case 'DEST_DELETE':
+    case 'DEST_REMOVE':
       return destinations.filter(d => {
         return d !== payload;
       });
@@ -28,11 +28,11 @@ reducers.destinations = (destinations = [], { type, payload }) => {
   }
 };
 
-reducers.search = (search = {}, { type, payload }) => {
+reducers.search = (search = { text: '', results: [] }, { type, payload }) => {
   switch (type) {
-    case 'SEARCH_TEXT':
+    case 'SET_SEARCH_TEXT':
       return { ...search, text: payload };
-    case 'SEARCH_RESULTS':
+    case 'SET_SEARCH_RESULTS':
       return { ...search, results: payload };
     default:
       return search;

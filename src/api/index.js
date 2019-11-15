@@ -20,7 +20,7 @@ const makeNodes = (width, height, p = 0.5) => {
         const prefix = getRand(prefixes);
         const node = {
           coords: [w, h],
-          addr: `${Math.round(rand(130))} ${prefix}${getRand(suffixes)} St`
+          addr: `${Math.round(rand(130)) + 1} ${prefix}${getRand(suffixes)} St`
         };
         nodes.push(node);
       }
@@ -53,21 +53,27 @@ const makeLinks = nodes => {
   return links;
 };
 
-const makeRandomData = (width, height) => {
-  const data = { nodes: makeNodes(width, height, 0.03) };
-  data.links = makeLinks(data.nodes);
-  return data;
-};
-
-const GeoData = makeRandomData(1200, 500);
-
 export const getCurrentLocation = () => {
   return [174.4487226, -36.6804325];
 };
 
+// Cache the results here
+// TODO: create static test data, so addresses/locations persist over reloads
+const GeoData = { nodes: [], links: [] };
+
 //For now, mock API calls
 export const getMapData = (width, height) => {
-  return Promise.resolve(makeRandomData(width, height));
+  return new Promise((resolve, reject) => {
+    try {
+      if (GeoData.nodes.length === 0) {
+        GeoData.nodes = makeNodes(width, height, 0.03);
+        GeoData.links = makeLinks(GeoData.nodes);
+      }
+      resolve(GeoData);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 export const getAddresses = str => {

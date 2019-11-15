@@ -1,18 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Home from './home';
+import Search from './search';
 import './App.css';
 
 //Temp - for dev
 const View = ({ name }) => <div>TODO: {name}</div>;
 const makeDest = () => {
-  return { id: Math.random(), name: 'Some destination' };
+  return { addr: `${Math.random()} Some destination` };
 };
 
 const viewMap = {
   home: Home,
+  search: Search,
   pick: () => <View name='Pick' />,
-  search: () => <View name='Search' />,
   directions: () => <View name='Directions' />,
   undefined: () => <View name='Oops!' />
 };
@@ -50,8 +51,8 @@ const addTestDest = dest => ({
 
 export default connect(
   state => {
-    const { view, destinations } = state;
-    return { view, destinations };
+    const { view, search, destinations } = state;
+    return { view, search, destinations };
   },
   { setView, addTestDest }
 )(App);
