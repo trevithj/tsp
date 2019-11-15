@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Map from '../map';
 
 const Frame = styled.div`
-  margin-top: 10vh;
+  margin-top: 10px;
 `;
 
 const Div = styled.div`
@@ -25,6 +26,7 @@ const Home = props => {
   const { destinations } = props;
   return (
     <Frame>
+      <Map />
       {destinations.map(dest => (
         <Div key={dest.id}>{dest.name}</Div>
       ))}

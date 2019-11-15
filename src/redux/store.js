@@ -28,6 +28,25 @@ reducers.destinations = (destinations = [], { type, payload }) => {
   }
 };
 
+reducers.search = (search = {}, { type, payload }) => {
+  switch (type) {
+    case 'SEARCH_TEXT':
+      return { ...search, text: payload };
+    case 'SEARCH_RESULTS':
+      return { ...search, results: payload };
+    default:
+      return search;
+  }
+};
+
+reducers.map = (map = { zoom: 1 }, { type, payload }) => {
+  switch (type) {
+    case 'MAP_SET_ZOOM':
+      return { ...map, zoom: payload };
+    default:
+      return map;
+  }
+};
 const reducer = combineReducers(reducers);
 const store = createStore(reducer, initialState);
 
