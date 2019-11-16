@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { getMapData } from './api';
 import Home from './home';
 import Search from './search';
 import './App.css';
 
 //Temp - for dev
 const View = ({ name }) => <div>TODO: {name}</div>;
-const makeDest = () => {
-  return { addr: `${Math.random()} Some destination` };
-};
+// const makeDest = () => {
+//   return { addr: `${Math.random()} Some destination` };
+// };
 
 const viewMap = {
   home: Home,
@@ -21,6 +22,7 @@ const viewMap = {
 const App = props => {
   const { view, setView, ...rest } = props;
   const TheView = viewMap[view];
+  useEffect(loadDataEffect(rest), []);
   return (
     <div className='App'>
       <header className='App-header'>
@@ -32,7 +34,7 @@ const App = props => {
         <button onClick={() => setView('pick')}>Pick</button>
         <button onClick={() => setView('search')}>Srch</button>
         <button onClick={() => setView('directions')}>Dirs</button>
-        <button onClick={() => rest.addTestDest(makeDest())}>Test</button>
+        {/* <button onClick={() => rest.addTestDest(makeDest())}>Test</button> */}
       </div>
       <TheView {...rest} />
     </div>
@@ -44,9 +46,9 @@ const setView = view => ({
   payload: view
 });
 
-const addTestDest = dest => ({
-  type: 'DEST_ADD',
-  payload: dest
+const setMapData = data => ({
+  type: 'MAP_SET_DATA',
+  payload: data
 });
 
 export default connect(
@@ -54,5 +56,17 @@ export default connect(
     const { view, search, destinations } = state;
     return { view, search, destinations };
   },
-  { setView, addTestDest }
+  { setView, setMapData }
 )(App);
+
+//
+const loadDataEffect = props => () => {
+  getMapData()
+    .then(data => {
+      props.setMapData(data);
+    })
+    .catch(err => {
+      console.log(err);
+      //todo: message user
+    });
+};

@@ -19,10 +19,8 @@ const Search = props => {
   };
 
   useEffect(() => {
-    console.log(text);
     if (text.length > 1) {
       getAddresses(text).then(data => {
-        console.log(data);
         setResults(data);
       });
     }
