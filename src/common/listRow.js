@@ -16,9 +16,33 @@ const Div = styled.div`
   );
 `;
 
+const Span = styled.span`
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: ${props => (props.type === 'add' ? 'green' : 'red')};
+  margin-right: 1em;
+`;
+
+// &#x2718;
+// &#x2295;
+// &#x2297;
+// &#x229D;
+// &#x2A01;
+// &#x2A02;
+// &#x2a2f;
+
 const ListRow = props => {
-  const { text = '?', doClick } = props;
-  return <Div onClick={doClick}>{text}</Div>;
+  const { text = '?', doClick, type } = props;
+  return (
+    <Div onClick={doClick}>
+      <div style={{ lineHeight: '1em' }}>
+        {type === 'add' && <Span type={type}> &#x2A01; </Span>}
+        {type === 'del' && <Span type={type}> &#x2A02; </Span>}
+        <span>{text}</span>
+      </div>
+    </Div>
+  );
 };
 
 export default ListRow;

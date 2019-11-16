@@ -13,7 +13,7 @@ const Input = styled.input``;
 
 const Search = props => {
   const { text, results } = props.search;
-  const { setResults } = props;
+  const { addDest, setView, setResults } = props;
   const doChange = e => {
     props.setText(e.target.value);
   };
@@ -27,12 +27,19 @@ const Search = props => {
       });
     }
   }, [text, setResults]);
+
+  const getHandler = dest => () => {
+    addDest(dest);
+    setView('home');
+  };
   return (
     <Frame>
       <Input onChange={doChange} value={text} type='text' />
-      {results.map(({ addr }) => (
-        <ListRow key={addr} text={addr} />
-      ))}
+      {results.map(loc => {
+        const doClick = getHandler(loc);
+        const addr = loc.addr;
+        return <ListRow key={addr} text={addr} type='add' doClick={doClick} />;
+      })}
     </Frame>
   );
 };
@@ -40,6 +47,8 @@ Search.propTypes = {
   search: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any).isRequired
   }).isRequired,
+  addDest: PropTypes.func.isRequired,
+  setView: PropTypes.func.isRequired,
   setResults: PropTypes.func.isRequired
 };
 
@@ -53,10 +62,20 @@ const setText = txt => ({
   payload: txt
 });
 
+const addDest = dest => ({
+  type: 'DEST_ADD',
+  payload: dest
+});
+
+const setView = view => ({
+  type: 'SET_VIEW',
+  payload: view
+});
+
 export default connect(
   state => {
     const { search } = state;
     return { search };
   },
-  { setResults, setText }
+  { addDest, setView, setResults, setText }
 )(Search);
