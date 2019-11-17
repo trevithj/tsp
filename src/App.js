@@ -20,10 +20,29 @@ const viewMap = {
   undefined: () => <View name='Oops!' />
 };
 
+const FIVE_MINS = 1000 * 60 * 1;
+
 const App = props => {
-  const { view, setView, ...rest } = props;
+  const { message, view, setView, ...rest } = props;
   const TheView = viewMap[view];
   useEffect(loadDataEffect(rest), []);
+  const checkDestUpdate = () => {
+    const { setMessage, timer } = props;
+    if (timer.dest === false) return;
+
+    if (timer.time + FIVE_MINS < new Date().getTime()) {
+      setMessage(`The last destination set was ${timer.dest.addr}.`);
+    } else {
+      setMessage('');
+    }
+  };
+  useEffect(() => {
+    const interval = setInterval(checkDestUpdate, 2000);
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -31,12 +50,11 @@ const App = props => {
       </header>
       {/* Temp: a menu bar */}
       <div>
-        <button onClick={() => setView('home')}>Home</button>
-        <button onClick={() => setView('pick')}>Pick</button>
         <button onClick={() => setView('search')}>Srch</button>
         <button onClick={() => setView('directions')}>Dirs</button>
         {/* <button onClick={() => rest.addTestDest(makeDest())}>Test</button> */}
       </div>
+      <div>{message}</div>
       <TheView {...rest} />
     </div>
   );
@@ -52,12 +70,17 @@ const setMapData = data => ({
   payload: data
 });
 
+const setMessage = msg => ({
+  type: 'SET_MSG',
+  payload: msg
+});
+
 export default connect(
   state => {
-    const { view, search, destinations } = state;
-    return { view, search, destinations };
+    const { view, search, destinations, timer, message } = state;
+    return { view, search, destinations, timer, message };
   },
-  { setView, setMapData }
+  { setView, setMapData, setMessage }
 )(App);
 
 //

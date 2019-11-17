@@ -6,16 +6,16 @@ export { permute, calcPathLength };
 
 export const tsp = destinations => {
   if (destinations.length < 2) {
-    return destinations; //??
+    return []; //No tour possible
   }
   if (destinations.length < 4) {
-    //any loop will do
+    //any loop will do, all the same length
     return [...destinations, destinations[0]];
   }
   if (destinations.length < 10) {
     return bruteForceFind(destinations);
   }
-  //Else ... hoy carumba!
+  //Else ... hoy carumba, mucho permutations!
   return findBestNNTour(destinations); //not optimal, but come ON!
 };
 

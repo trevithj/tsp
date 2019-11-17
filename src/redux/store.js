@@ -13,6 +13,22 @@ reducers.view = (view = 'home', { type, payload }) => {
   }
 };
 
+const defaultTimer = { time: -1, dest: false };
+reducers.timer = (timer = defaultTimer, { type, payload }) => {
+  switch (type) {
+    case 'DEST_CLEAR':
+      return defaultTimer;
+    case 'DEST_ADD':
+      return { time: new Date().getTime(), dest: payload };
+    default:
+      return timer;
+  }
+};
+
+reducers.message = (message = '', { type, payload }) => {
+  return type === 'SET_MSG' ? payload : message;
+};
+
 reducers.destinations = (destinations = {}, { type, payload }) => {
   switch (type) {
     case 'DEST_CLEAR':
@@ -28,20 +44,6 @@ reducers.destinations = (destinations = {}, { type, payload }) => {
       return destinations;
   }
 };
-// reducers.destinations = (destinations = [], { type, payload }) => {
-//   switch (type) {
-//     case 'DEST_CLEAR':
-//       return [];
-//     case 'DEST_ADD':
-//       return [...destinations, payload];
-//     case 'DEST_REMOVE':
-//       return destinations.filter(d => {
-//         return d !== payload;
-//       });
-//     default:
-//       return destinations;
-//   }
-// };
 
 reducers.search = (search = { text: '', results: [] }, { type, payload }) => {
   switch (type) {
