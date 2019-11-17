@@ -8,8 +8,9 @@ describe('API calls', () => {
   });
   it('should return list of matching addresses', () => {
     return API.getAddresses('Kai').then(list => {
-      console.log(list);
+      // console.log(list);
       expect(list.length).toBeGreaterThan(0);
+      expect(list[0].coords).toBeDefined();
     });
   });
   // it('should return exact address if possible', () => {
