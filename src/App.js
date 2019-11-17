@@ -4,30 +4,26 @@ import { getMapData } from './api';
 import Home from './home';
 import Search from './search';
 import Pick from './pick';
+import Directions from './directions';
 import './App.css';
-
-//Temp - for dev
-const View = ({ name }) => <div>TODO: {name}</div>;
-// const makeDest = () => {
-//   return { addr: `${Math.random()} Some destination` };
-// };
 
 const viewMap = {
   home: Home,
   search: Search,
   pick: Pick,
-  directions: () => <View name='Directions' />,
-  undefined: () => <View name='Oops!' />
+  directions: Directions,
+  undefined: () => <div>Oops!</div>
 };
 
-const FIVE_MINS = 1000 * 60 * 1;
+const FIVE_MINS = 1000 * 60 * 5;
 
 const App = props => {
-  const { message, view, setView, ...rest } = props;
+  const { message, view, ...rest } = props;
   const TheView = viewMap[view];
   useEffect(loadDataEffect(rest), []);
   const checkDestUpdate = () => {
     const { setMessage, timer } = props;
+    if (view !== 'home') return;
     if (timer.dest === false) return;
 
     if (timer.time + FIVE_MINS < new Date().getTime()) {
@@ -37,7 +33,7 @@ const App = props => {
     }
   };
   useEffect(() => {
-    const interval = setInterval(checkDestUpdate, 2000);
+    const interval = setInterval(checkDestUpdate, 10000);
     return () => {
       clearInterval(interval);
     };
@@ -48,22 +44,11 @@ const App = props => {
       <header className='App-header'>
         <p className='App-title'>The RUSH App</p>
       </header>
-      {/* Temp: a menu bar */}
-      <div>
-        <button onClick={() => setView('search')}>Srch</button>
-        <button onClick={() => setView('directions')}>Dirs</button>
-        {/* <button onClick={() => rest.addTestDest(makeDest())}>Test</button> */}
-      </div>
       <div>{message}</div>
       <TheView {...rest} />
     </div>
   );
 };
-
-const setView = view => ({
-  type: 'SET_VIEW',
-  payload: view
-});
 
 const setMapData = data => ({
   type: 'MAP_SET_DATA',
@@ -77,10 +62,10 @@ const setMessage = msg => ({
 
 export default connect(
   state => {
-    const { view, search, destinations, timer, message } = state;
-    return { view, search, destinations, timer, message };
+    const { view, destinations, timer, message } = state;
+    return { view, destinations, timer, message };
   },
-  { setView, setMapData, setMessage }
+  { setMapData, setMessage }
 )(App);
 
 //

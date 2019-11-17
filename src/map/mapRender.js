@@ -1,8 +1,16 @@
 import * as d3 from 'd3';
 
-const renderGeoData = (viewSelector, geoData) => {
-  const view = d3.select(viewSelector);
-  // view.removeAll();
+const renderGeoData = (divSelector, geoData) => {
+  if (!geoData) return;
+  const div = d3.select(divSelector);
+  if (!div) return;
+  div.selectAll('svg').remove();
+  const svg = div.append('svg');
+  svg.attr('width', '2400');
+  svg.attr('height', '1800');
+  const view = svg.append('g');
+  if (!view) return;
+  console.log('rendering');
   view
     .append('path')
     .attr('fill', 'none')
@@ -20,8 +28,7 @@ const renderGeoData = (viewSelector, geoData) => {
     .append('g')
     .selectAll('circle')
     .data(geoData.nodes)
-    .enter()
-    .append('circle')
+    .join('circle')
     .attr('fill', 'silver')
     .attr('r', '4')
     .attr('cx', node => node.coords[0])
@@ -29,24 +36,19 @@ const renderGeoData = (viewSelector, geoData) => {
 
   view
     .append('g')
-    // .attr('style', 'transform: rotate(0.5turn)')
     .selectAll('text')
     .data(geoData.nodes)
-    .enter()
-    .append('text')
+    .join('text')
     .text(node => node.addr)
     .attr('style', 'font-size: 8px;')
     .attr('x', node => node.coords[0])
     .attr('y', node => node.coords[1]);
 
-  // d3.select('svg').call(
-  // const svg = d3.select('svg');
-  // svg.call(
-  //   d3.zoom().on('zoom', () => {
-  //     // view.attr('transform', d3.event.transform);
-  //     svg.attr('transform', d3.event.transform);
-  //   })
-  // );
+  svg.call(
+    d3.zoom().on('zoom', () => {
+      view.attr('transform', d3.event.transform);
+    })
+  );
   return view;
 };
 

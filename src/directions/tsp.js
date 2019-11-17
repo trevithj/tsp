@@ -34,3 +34,5 @@ export const bruteForceFind = dArray => {
   });
   return shortestTour;
 };
+
+export default tsp;

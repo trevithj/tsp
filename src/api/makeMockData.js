@@ -1,27 +1,49 @@
 //Make mock data - node script
 //  node makeMockData.js > mockData.js
-const rand = max => Math.round((Math.random() * max) / 20) * 20;
+// const rand = max => Math.round((Math.random() * max) / 20) * 20;
 const getRand = arr => arr[Math.floor(Math.random() * arr.length)];
 
-const prefixes = 'Ar Be Co Del En Fin Gel Har Inn Jes Kai Lo Mac Ne O Pa Ra St Tre Van Will'.split(
+const prefixes = 'Ar Be Co Del En Fin Gel Har Inn Jes Kai Lo Mac Ne O Pa Ra So Tre Van Will'.split(
   ' '
 );
 const suffixes = 'an bon chel den fe gar holm jar kaka lear mun nagle para pen rie sen tule vet way'.split(
   ' '
 );
 
-const makeNodes = (width, height, p = 0.5) => {
-  const nodes = [];
-  let w = -width;
+const makeStreets = (n, type = 'St', map = {}) => {
+  //Use map - no duplicates
+  while (n > 0) {
+    const prefix = getRand(prefixes);
+    const street = `${prefix}${getRand(suffixes)} ${type}`;
+    map[street] = 1;
+    n -= 1;
+  }
+  return map;
+};
 
-  while (w < 2 * width) {
-    let h = -height;
-    while (h < 2 * height) {
+const getStreets = n => {
+  n = Math.round(n / 4);
+  const nameMap = makeStreets(n * 2, 'St');
+  makeStreets(n, 'Rd', nameMap);
+  makeStreets(n, 'Ave', nameMap);
+  return Object.keys(nameMap);
+};
+
+const makeNodes = (width, height, p = 0.5) => {
+  const streets = getStreets(Math.round(width + height / 10));
+  const nodes = [];
+  let w = 0;
+
+  while (w < width) {
+    let h = 0;
+    const street = getRand(streets);
+    let nbr = 0;
+    while (h < height) {
       if (Math.random() < p) {
-        const prefix = getRand(prefixes);
+        nbr += Math.round(Math.random() * 10) + 1;
         const node = {
           coords: [w, h],
-          addr: `${Math.round(rand(130)) + 1} ${prefix}${getRand(suffixes)} St`
+          addr: `${nbr} ${street}`
         };
         nodes.push(node);
       }
@@ -58,7 +80,7 @@ const GeoData = { nodes: [], links: [] };
 
 try {
   if (GeoData.nodes.length === 0) {
-    GeoData.nodes = makeNodes(800, 800, 0.03);
+    GeoData.nodes = makeNodes(2400, 1800, 0.03);
     GeoData.links = makeLinks(GeoData.nodes);
   }
 } catch (err) {

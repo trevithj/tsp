@@ -2,33 +2,44 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Map from '../map';
+import Map, { MapDiv } from '../map';
 import ListRow from '../common/listRow';
 
 const Frame = styled.div`
   margin-top: 10px;
 `;
 
-const Txt = styled.text`
+const Txt = styled.div`
   font-size: 72px;
   font-weight: bold;
   stroke: blue;
   cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 9;
 `;
 
 const Home = props => {
-  const { destinations, delDestination, setView } = props;
+  const { destinations, data, delDestination, setView } = props;
 
   const getHandler = dest => () => {
     delDestination(dest);
   };
   return (
     <Frame>
-      <Map>
-        <Txt x='10' y='300' onClick={() => setView('pick')}>
-          &#x2316;
-        </Txt>
-      </Map>
+      <div>
+        <button onClick={() => setView('search')}>Srch</button>
+        <button onClick={() => setView('directions')}>Dirs</button>
+      </div>
+      <MapDiv height='50vh'>
+        <Map data={data}>
+          <Txt x='10' y='300' onClick={() => setView('pick')}>
+            &#x2316;
+          </Txt>
+        </Map>
+      </MapDiv>
       {Object.values(destinations).map(dest => {
         const doClick = getHandler(dest);
         const addr = dest.addr;
@@ -53,8 +64,8 @@ const setView = view => ({
 
 export default connect(
   state => {
-    const { destinations } = state;
-    return { destinations };
+    const { destinations, map } = state;
+    return { destinations, data: map.data };
   },
   { delDestination, setView }
 )(Home);
