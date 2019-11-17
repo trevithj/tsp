@@ -16,9 +16,29 @@ const Txt = styled.div`
   cursor: pointer;
   display: inline-block;
   position: absolute;
-  left: 10px;
+  right: 10px;
   bottom: 10px;
   z-index: 9;
+`;
+
+const Search = styled.div`
+  border: solid thin silver;
+  background-color: white;
+  color: silver;
+  width: 100%;
+  padding-left: 10%;
+  line-height: 2em;
+  cursor: pointer;
+`;
+
+const ShowTour = styled.div`
+  border: solid thin silver;
+  background-color: white;
+  color: blue;
+  width: 100%;
+  line-height: 2em;
+  padding-left: 10%;
+  cursor: pointer;
 `;
 
 const Home = props => {
@@ -29,17 +49,18 @@ const Home = props => {
   };
   return (
     <Frame>
-      <div>
-        <button onClick={() => setView('search')}>Srch</button>
-        <button onClick={() => setView('directions')}>Dirs</button>
-      </div>
+      <Search onClick={() => setView('search')}>
+        <span role='img' aria-label='Search box'>
+          &#128269;
+        </span>{' '}
+        Search
+      </Search>
       <MapDiv height='50vh'>
         <Map data={data}>
-          <Txt x='10' y='300' onClick={() => setView('pick')}>
-            &#x2316;
-          </Txt>
+          <Txt onClick={() => setView('pick')}>&#x2316;</Txt>
         </Map>
       </MapDiv>
+      <ShowTour onClick={() => setView('directions')}>Directions</ShowTour>
       {Object.values(destinations).map(dest => {
         const doClick = getHandler(dest);
         const addr = dest.addr;

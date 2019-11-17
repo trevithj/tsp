@@ -35,4 +35,13 @@ export const bruteForceFind = dArray => {
   return shortestTour;
 };
 
-export default tsp;
+export default destinations => {
+  return new Promise((resolve, reject) => {
+    try {
+      const tour = tsp(destinations);
+      resolve(tour);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};

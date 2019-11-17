@@ -9,7 +9,10 @@ const Frame = styled.div`
   margin-top: 10px;
 `;
 
-const Input = styled.input``;
+const Input = styled.input`
+  margin-left: 20px;
+  width: 60%;
+`;
 
 const Search = props => {
   const { text, results } = props.search;
@@ -32,7 +35,13 @@ const Search = props => {
   };
   return (
     <Frame>
-      <Input onChange={doChange} value={text} type='text' />
+      <button onClick={() => setView('home')}>Back</button>
+      <Input
+        onChange={doChange}
+        value={text}
+        type='text'
+        placeholder='Search addresses'
+      />
       {results.map(loc => {
         const doClick = getHandler(loc);
         const addr = loc.addr;

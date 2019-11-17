@@ -29,9 +29,9 @@ const getStreets = n => {
   return Object.keys(nameMap);
 };
 
-const makeNodes = (width, height, p = 0.5) => {
+const makeNodes = (width, height, p = 0.7) => {
   const streets = getStreets(Math.round(width + height / 10));
-  const nodes = [];
+  const nodes = {};
   let w = 0;
 
   while (w < width) {
@@ -45,13 +45,13 @@ const makeNodes = (width, height, p = 0.5) => {
           coords: [w, h],
           addr: `${nbr} ${street}`
         };
-        nodes.push(node);
+        nodes[node.addr] = node;
       }
       h += 20;
     }
     w += 20;
   }
-  return nodes;
+  return Object.values(nodes);
 };
 
 const makeLink = (src, tgt) => {

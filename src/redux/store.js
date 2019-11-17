@@ -57,14 +57,19 @@ reducers.search = (search = { text: '', results: [] }, { type, payload }) => {
 };
 
 reducers.map = combineReducers({
-  test: (z, actn) => {
+  data: (data = { nodes: [], links: [] }, actn) => {
     console.log(actn);
-    return 1;
+    switch (actn.type) {
+      case 'MAP_SET_DATA':
+        return actn.payload; //clear the tour here
+      case 'MAP_SET_TOUR':
+        return { ...data, tour: actn.payload };
+      default:
+        return data;
+    }
   },
   zoom: (zoom = 1, actn) =>
     actn.type === 'MAP_SET_ZOOM' ? actn.payload : zoom,
-  data: (data = { nodes: [], links: [] }, actn) =>
-    actn.type === 'MAP_SET_DATA' ? actn.payload : data,
   x: (x = 0, actn) => (actn.type === 'MAP_SET_X' ? actn.payload : x),
   y: (y = 0, actn) => (actn.type === 'MAP_SET_Y' ? actn.payload : y)
 });
