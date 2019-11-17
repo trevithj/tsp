@@ -9,16 +9,27 @@ const Frame = styled.div`
   margin-top: 10px;
 `;
 
+const Txt = styled.text`
+  font-size: 72px;
+  font-weight: bold;
+  stroke: blue;
+  cursor: pointer;
+`;
+
 const Home = props => {
-  const { destinations, delDestination } = props;
+  const { destinations, delDestination, setView } = props;
 
   const getHandler = dest => () => {
     delDestination(dest);
   };
   return (
     <Frame>
-      <Map />
-      {destinations.map(dest => {
+      <Map>
+        <Txt x='10' y='300' onClick={() => setView('pick')}>
+          &#x2316;
+        </Txt>
+      </Map>
+      {Object.values(destinations).map(dest => {
         const doClick = getHandler(dest);
         const addr = dest.addr;
         return <ListRow key={addr} text={addr} doClick={doClick} type='del' />;
@@ -27,7 +38,7 @@ const Home = props => {
   );
 };
 Home.propTypes = {
-  destinations: PropTypes.arrayOf(PropTypes.any).isRequired
+  destinations: PropTypes.object.isRequired
 };
 
 const delDestination = dest => ({

@@ -13,20 +13,35 @@ reducers.view = (view = 'home', { type, payload }) => {
   }
 };
 
-reducers.destinations = (destinations = [], { type, payload }) => {
+reducers.destinations = (destinations = {}, { type, payload }) => {
   switch (type) {
     case 'DEST_CLEAR':
-      return [];
+      return {};
     case 'DEST_ADD':
-      return [...destinations, payload];
+      return { ...destinations, [payload.addr]: payload };
     case 'DEST_REMOVE':
-      return destinations.filter(d => {
-        return d !== payload;
-      });
+      return Object.keys(destinations).reduce((newDest, addr) => {
+        if (addr !== payload.addr) newDest[addr] = destinations[addr];
+        return newDest;
+      }, {});
     default:
       return destinations;
   }
 };
+// reducers.destinations = (destinations = [], { type, payload }) => {
+//   switch (type) {
+//     case 'DEST_CLEAR':
+//       return [];
+//     case 'DEST_ADD':
+//       return [...destinations, payload];
+//     case 'DEST_REMOVE':
+//       return destinations.filter(d => {
+//         return d !== payload;
+//       });
+//     default:
+//       return destinations;
+//   }
+// };
 
 reducers.search = (search = { text: '', results: [] }, { type, payload }) => {
   switch (type) {

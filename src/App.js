@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getMapData } from './api';
 import Home from './home';
 import Search from './search';
+import Pick from './pick';
 import './App.css';
 
 //Temp - for dev
@@ -14,7 +15,7 @@ const View = ({ name }) => <div>TODO: {name}</div>;
 const viewMap = {
   home: Home,
   search: Search,
-  pick: () => <View name='Pick' />,
+  pick: Pick,
   directions: () => <View name='Directions' />,
   undefined: () => <View name='Oops!' />
 };
