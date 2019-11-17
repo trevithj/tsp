@@ -48,8 +48,8 @@ reducers.map = combineReducers({
     actn.type === 'MAP_SET_ZOOM' ? actn.payload : zoom,
   data: (data = { nodes: [], links: [] }, actn) =>
     actn.type === 'MAP_SET_DATA' ? actn.payload : data,
-  x: (x = 0, actn) => (actn.type === 'MAP_SET_XY' ? actn.payload.x : x),
-  y: (y = 0, actn) => (actn.type === 'MAP_SET_XY' ? actn.payload.y : y)
+  x: (x = 0, actn) => (actn.type === 'MAP_SET_X' ? actn.payload : x),
+  y: (y = 0, actn) => (actn.type === 'MAP_SET_Y' ? actn.payload : y)
 });
 
 const reducer = combineReducers(reducers);

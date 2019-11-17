@@ -38,6 +38,16 @@ const renderGeoData = (viewSelector, geoData) => {
     .attr('style', 'font-size: 8px;')
     .attr('x', node => node.coords[0])
     .attr('y', node => node.coords[1]);
+
+  // d3.select('svg').call(
+  // const svg = d3.select('svg');
+  // svg.call(
+  //   d3.zoom().on('zoom', () => {
+  //     // view.attr('transform', d3.event.transform);
+  //     svg.attr('transform', d3.event.transform);
+  //   })
+  // );
+  return view;
 };
 
 export default renderGeoData;
