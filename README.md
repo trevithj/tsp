@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). By default this does not include Redux, so that has been installed separately.
 
+The development notes can be found [here.](DEV_NOTES.md)
+
 ## To run the project
 
 Clone this repository, and install dependencies using one of these:
